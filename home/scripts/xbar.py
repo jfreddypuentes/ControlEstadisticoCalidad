@@ -1,0 +1,22 @@
+from pylab import *
+import numpy as np
+cadena         = sys.argv[4]
+cadena_lista   = cadena.split(",")
+cadena_numeros = np.array(cadena_lista)
+s=cadena_numeros.astype(np.float)
+t=arange(0.0,len(s),1)
+limite_superior = int(sys.argv[1])
+limite_inferior = int(sys.argv[2])
+_media = int(sys.argv[3])
+lim_super  = np.array([limite_superior for i in xrange(len(s))])
+media      = np.array([_media for i in xrange(len(s))])
+lim_infer  = np.array([limite_inferior for i in xrange(len(s))])
+plot(t,s)
+plot(lim_super)
+plot(lim_infer)
+plot(media)
+xlabel('Muestra')
+ylabel('[Limite Inferior         Media         Limite Superior]')
+title('X Bar')
+grid(True)
+show()
