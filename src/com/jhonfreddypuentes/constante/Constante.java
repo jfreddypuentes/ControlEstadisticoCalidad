@@ -157,7 +157,6 @@ public class Constante {
     public static final String FILE_GET_PYTHON_PY  = "get-python.py";
     public static final String FILE_X_BAR_PY       = "xbar.py";
     public static final String FILE_X_BAR_S_PY     = "xbars.py";
-    //public static final String FILE_X_BAR_R_PY     = "xbarr.py";
     public static final String FILE_X_M_R_PY       = "xmr.py";
     public static final String FILE_P_PY           = "p.py";
     public static final String FILE_NP_PY          = "np.py";
