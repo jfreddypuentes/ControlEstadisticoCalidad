@@ -23,6 +23,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import org.apache.poi.ss.usermodel.Sheet;
 import java.util.List;
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -35,7 +36,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 public class VentanaFormularioGrafica extends javax.swing.JFrame {
 
     
-    private TipoGraficaEnum tipoGrafica;     
+    private TipoGraficaEnum tipoGrafica;
+    private final ButtonGroup buttonGroup;
+    private Double mediaConocida;
     
     /**
      * Creates new form VentanaFormularioXBar.
@@ -45,6 +48,11 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
         tipoGrafica = null;
         jLabel_tituloVentana.setText(DataTransito.tituloVentanaRegistroDatos);
         mostrarCamposTamanioMuestra(false);
+        mostrarCampoParaMediaConocida(false);
+        buttonGroup = new ButtonGroup();
+        buttonGroup.add(jRadioButton_NO);
+        buttonGroup.add(jRadioButton_SI);
+        mediaConocida=null;
     }
     
     
@@ -60,6 +68,26 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                 public void keyTyped(KeyEvent e) {
                   char c = e.getKeyChar();
                   if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || (c == KeyEvent.VK_DELETE))) {
+                    getToolkit().beep();
+                    e.consume();
+                  }
+                }
+            }); 
+        }
+    }
+    
+    private void mostrarCampoParaMediaConocida(boolean estado){
+        jLabel_mediaConocidaDelProceso.setVisible(estado);
+        jTextField_mediaConocidaDelProceso.setVisible(estado);
+        
+        //Activar validador para el campo tamanio de muestra solo si esta activo.
+        if(estado){
+            jTextField_mediaConocidaDelProceso.addKeyListener(new KeyAdapter() {
+                @Override
+                public void keyTyped(KeyEvent e) {
+                  char c = e.getKeyChar();
+                  if (!((c >= '0') && (c <= '9') || (c == KeyEvent.VK_BACK_SPACE) || 
+                       (c == KeyEvent.VK_DELETE) || (c == KeyEvent.VK_COMMA) || (c == KeyEvent.VK_PERIOD) )) {
                     getToolkit().beep();
                     e.consume();
                   }
@@ -93,6 +121,8 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel_tituloVentana = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
@@ -111,6 +141,11 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
         jLabel_limiteControlInferior = new javax.swing.JLabel();
         jLabel_tamanio_muestra = new javax.swing.JLabel();
         jTextField_tamanio_muestra = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel_mediaConocidaDelProceso = new javax.swing.JLabel();
+        jTextField_mediaConocidaDelProceso = new javax.swing.JTextField();
+        jRadioButton_SI = new javax.swing.JRadioButton();
+        jRadioButton_NO = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -167,7 +202,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3))
-                .addGap(20, 20, 20))
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Resultados"));
@@ -237,6 +272,24 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("¿Es conocida la media del proceso?");
+
+        jLabel_mediaConocidaDelProceso.setText("Valor de la media:");
+
+        jRadioButton_SI.setText("SI");
+        jRadioButton_SI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton_SIActionPerformed(evt);
+            }
+        });
+
+        jRadioButton_NO.setText("NO");
+        jRadioButton_NO.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton_NOActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -245,15 +298,22 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel_tituloVentana, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel_tamanio_muestra)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel_mediaConocidaDelProceso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel_tamanio_muestra, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField_tamanio_muestra))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                            .addComponent(jTextField_tamanio_muestra)
+                            .addComponent(jTextField_mediaConocidaDelProceso)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jRadioButton_SI)
+                                .addGap(18, 18, 18)
+                                .addComponent(jRadioButton_NO)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -261,14 +321,23 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel_tituloVentana)
                 .addGap(5, 5, 5)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(3, 3, 3)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jRadioButton_SI)
+                    .addComponent(jRadioButton_NO))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel_mediaConocidaDelProceso)
+                    .addComponent(jTextField_mediaConocidaDelProceso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel_tamanio_muestra)
                     .addComponent(jTextField_tamanio_muestra, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -293,14 +362,36 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
 
     private void jButton_cargueDatosPorExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cargueDatosPorExcelActionPerformed
         boolean validacionOK = true;
+        boolean validacionMediaConocidad = true;
+        
         if((this.tipoGrafica==TipoGraficaEnum.P || this.tipoGrafica==TipoGraficaEnum.NP || 
             this.tipoGrafica==TipoGraficaEnum.U)&& !checkTamanioMuestra()){
             validacionOK = false;
             JOptionPane.showMessageDialog(this, Constante.VALIDACION_TAMANIO_MUESTRA);
         }
-        if(validacionOK){
-            cargarDatosDesdeExcel();
+        
+        if(jRadioButton_SI.isSelected()){
+            String mediaConocidaDelProceso = jTextField_mediaConocidaDelProceso.getText();
+            validacionMediaConocidad = !(mediaConocidaDelProceso==null || mediaConocidaDelProceso.isEmpty());
         }
+        
+        if(!validacionMediaConocidad){
+            JOptionPane.showMessageDialog(this, Constante.VALIDACION_MEDIA_CONOCIDA);
+        }
+        
+        try{
+            if(jRadioButton_SI.isSelected()){
+                mediaConocida = Double.parseDouble(jTextField_mediaConocidaDelProceso.getText().replace(",", "."));
+            }
+            
+            if(validacionOK && validacionMediaConocidad){
+                cargarDatosDesdeExcel();
+            }
+        }catch(Exception e){
+            jTextField_mediaConocidaDelProceso.setText("");
+            JOptionPane.showMessageDialog(this, Constante.VALIDACION_MEDIA_CONOCIDA_DATO);
+        }
+        
     }//GEN-LAST:event_jButton_cargueDatosPorExcelActionPerformed
 
     private void jButton_cargarDatosManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cargarDatosManualActionPerformed
@@ -331,6 +422,14 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     private void jTextField_tamanio_muestraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_tamanio_muestraActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField_tamanio_muestraActionPerformed
+
+    private void jRadioButton_SIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_SIActionPerformed
+        mostrarCampoParaMediaConocida(true);
+    }//GEN-LAST:event_jRadioButton_SIActionPerformed
+
+    private void jRadioButton_NOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton_NOActionPerformed
+        mostrarCampoParaMediaConocida(false);
+    }//GEN-LAST:event_jRadioButton_NOActionPerformed
 
     private void cargarDatosDesdeExcel() {
         Util.print("[INI] - cargarDatosDesdeExcel");
@@ -430,6 +529,13 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     datos         = Util.obtenerDatosCsvDesdeLista(listaDatos);
                     String datosR = Util.obtenerDatosCsvDesdeLista(rangosPorFila);
                     
+                    System.out.println("MEDIA CALCULADA:"+mediaDeMedias);
+                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                    //¿Se conoce la media del proceso?
+                    if(mediaConocida!=null){
+                        mediaDeMedias = mediaConocida;
+                    }
+                    
                     parametros = limiteControlInferiorEquisBarra+" "+limiteControlSuperiorEquisBarra+" "+mediaDeMedias+""
                                  + " \""+datos+"\"" +" "+limiteControlInferiorErre+" "+limiteControlSuperiorErre+" "+mediaDeRangos+" "+datosR;
 
@@ -480,6 +586,13 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     double B3 = Constante.LISTA_B3.get(tamanioMuestra);
                     double B4 = Constante.LISTA_B4.get(tamanioMuestra);
                     double A3 = Constante.LISTA_A3.get(tamanioMuestra);
+                    
+                    System.out.println("MEDIA CALCULADA:"+mediaDeMedias);
+                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                    //¿Se conoce la media del proceso?
+                    if(mediaConocida!=null){
+                        mediaDeMedias = mediaConocida;
+                    }
                     
                     limiteControlInferiorS  = B3*mediaDeDesviaciones;
                     limiteControlSuperiorS  = B4*mediaDeDesviaciones;
@@ -533,7 +646,14 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     Double mediaDeRangosMoviles = Util.calcularMedia(rangosMoviles);
                     String datosX               = Util.obtenerDatosCsvDesdeLista(datosEnFila);
                     String datosRM              = Util.obtenerDatosCsvDesdeLista(rangosMoviles);
-                                        
+                    
+                    System.out.println("MEDIA CALCULADA:"+mediaGeneral);
+                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                    //¿Se conoce la media del proceso?
+                    if(mediaConocida!=null){
+                        mediaGeneral = mediaConocida;
+                    }
+                    
                     Double limiteSuperiorParaX = mediaGeneral + 3 * (mediaDeRangosMoviles/1.128);
                     Double limiteInferiorParaX = mediaGeneral - 3 * (mediaDeRangosMoviles/1.128);
                     
@@ -588,6 +708,14 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                         Double mxn =  (double) tam * n;
                         
                         Double pMedia              = sumatoria/mxn;
+                        
+                        System.out.println("MEDIA CALCULADA:"+pMedia);
+                        System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                        //¿Se conoce la media del proceso?
+                        if(mediaConocida!=null){
+                            pMedia = mediaConocida;
+                        }
+                        
                         Double limiteSuperiorParaP = pMedia+3*Math.sqrt((pMedia*(1-pMedia))/tam);
                         Double limiteInferiorParaP = pMedia-3*Math.sqrt((pMedia*(1-pMedia))/tam);
                         String datosP              = Util.obtenerDatosCsvDesdeLista(datosEnFila,tam);
@@ -639,7 +767,14 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                         int n         = datosEnFila.size();
                         Double mxn    =  (double) tam * n;
                         Double pMedia = sumatoria/mxn;
-                                                
+                        
+                        System.out.println("MEDIA CALCULADA:"+pMedia);
+                        System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                        //¿Se conoce la media del proceso?
+                        if(mediaConocida!=null){
+                            pMedia = mediaConocida;
+                        }
+                        
                         Double limiteSuperiorParaP = (tam*pMedia)+(3*Math.sqrt((tam*pMedia*(1-pMedia))));
                         Double limiteInferiorParaP = (tam*pMedia)-(3*Math.sqrt((tam*pMedia*(1-pMedia))));
                         String datosNP              = Util.obtenerDatosCsvDesdeLista(datosEnFila);
@@ -684,6 +819,14 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     String datosC                = Util.obtenerDatosCsvDesdeLista(datosEnFila);
                     Double sumatoria             = Util.sumarElementos(datosEnFila);
                     Double cBarra                = sumatoria/datosEnFila.size();
+                    
+                    System.out.println("MEDIA CALCULADA:"+cBarra);
+                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                    //¿Se conoce la media del proceso?
+                    if(mediaConocida!=null){
+                        cBarra = mediaConocida;
+                    }
+                    
                     Double limiteControlSuperior = cBarra + 3*Math.sqrt(cBarra);
                     Double lineaCentral          = cBarra;
                     Double limiteControlInferior = cBarra - 3*Math.sqrt(cBarra);
@@ -717,6 +860,13 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     String datosU                          = Util.obtenerDatosCsvDesdeLista(disconformidadesPorUnidad);
                     Double sumatoria                       = Util.sumarElementos(disconformidadesPorUnidad);
                     Double uBarra                          = sumatoria/disconformidadesPorUnidad.size();
+                    
+                    System.out.println("MEDIA CALCULADA:"+uBarra);
+                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
+                    //¿Se conoce la media del proceso?
+                    if(mediaConocida!=null){
+                        uBarra = mediaConocida;
+                    }
                     
                     Double limiteControlSuperior = uBarra + 3*Math.sqrt(uBarra/n);
                     Double lineaCentral          = uBarra;
@@ -925,8 +1075,11 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JButton jButton_cargarDatosManual;
     private javax.swing.JButton jButton_cargueDatosPorExcel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
@@ -935,6 +1088,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabel_limiteControlInferior;
     private javax.swing.JLabel jLabel_limiteControlSuperior;
+    private javax.swing.JLabel jLabel_mediaConocidaDelProceso;
     private javax.swing.JLabel jLabel_mediaDeRangos;
     private javax.swing.JLabel jLabel_mediaDe_medias;
     private javax.swing.JLabel jLabel_tamanio_muestra;
@@ -942,6 +1096,9 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JRadioButton jRadioButton_NO;
+    private javax.swing.JRadioButton jRadioButton_SI;
+    private javax.swing.JTextField jTextField_mediaConocidaDelProceso;
     private javax.swing.JTextField jTextField_tamanio_muestra;
     // End of variables declaration//GEN-END:variables
 }

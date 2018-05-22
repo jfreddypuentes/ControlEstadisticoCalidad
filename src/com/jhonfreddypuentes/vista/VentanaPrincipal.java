@@ -11,6 +11,9 @@ import com.jhonfreddypuentes.process.InstallPylabProcess;
 import com.jhonfreddypuentes.process.InstallPythonProcess;
 import com.jhonfreddypuentes.util.DataTransito;
 import com.jhonfreddypuentes.util.Util;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -272,9 +275,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
-        //JOptionPane.showMessageDialog(null,"TO DO : Mostrar manual...");
-        mostrarMensaje("TO DO : Mostrar manual...");
+        if (Desktop.isDesktopSupported()) {
+            try {
+                File myFile = new File(Util.getHome()+Constante.RUTA_MANUAL_USUARIO);
+                int a = 1/0;
+                Desktop.getDesktop().open(myFile);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, Constante.ERROR_AL_ABRIR_MANUAL_PDF);
+            }
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem_installPythonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_installPythonActionPerformed

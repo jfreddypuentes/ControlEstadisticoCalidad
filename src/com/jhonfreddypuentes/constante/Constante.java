@@ -43,6 +43,9 @@ public class Constante {
     public static final String LIBRO_DE_TRABAJO_ES_NULO                    = "El libro de trabajo es nulo.";
     public static final String VALIDACION_GRAFICA_XMR                      = "Para este tipo de grafica solo debe haber una columna de datos.";
     public static final String VALIDACION_TAMANIO_MUESTRA                  = "Debe ingresar el tamaño de la muestra.";
+    public static final String VALIDACION_MEDIA_CONOCIDA                   = "Para continuar, debe indicar la media del proceso o indicar que no es conocida.";
+    public static final String VALIDACION_MEDIA_CONOCIDA_DATO              = "El valor de la media ingresada no es válido. Verifique que sea un número real válido.";
+    public static final String ERROR_AL_ABRIR_MANUAL_PDF                   = "No fué posible abrir el manual de forma automática. \nDirijase a la ruta : ControlEstadistico\\home\\guide y abralo desde ahí.\nCompruebe que el computador tenga instalado un lector de archivos pdf.";
     public static final String CANTIDAD_DE_MUESTRAS                        = "Cantidad de muestras: *";
     public static final String MENSAJE_PUNTOS_FUERA_DE_LIMITES             = "Hay {} punto(s) más allá de límites. ¿Desea gestionarlo(s)?";
     public static final String TITLE_PUNTOS_FUERA                          = "Puntos Fuera";
@@ -135,6 +138,7 @@ public class Constante {
     public static final String RUTA_PYTHON_INSTALLER          = "/installers/python";
     public static final String RUTA_PYTHON27                  = "/installers/python27/python ";
     public static final String SCRIPTS                        = "/scripts/";
+    public static final String RUTA_MANUAL_USUARIO            = "/guide/manual.pdf";
     /**
      * Claves de propiedades.
      */
