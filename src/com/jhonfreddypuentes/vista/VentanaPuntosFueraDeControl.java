@@ -276,11 +276,14 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
                         graficarP();
                     if(graficoPorAtributo!=null && graficoPorAtributo.getTipoGrafico()==TipoGraficaEnum.NP)
                         graficarNP();
+                    if(graficoPorAtributo!=null && graficoPorAtributo.getTipoGrafico()==TipoGraficaEnum.C)
+                        graficarC();
+                    if(graficoPorAtributo!=null && graficoPorAtributo.getTipoGrafico()==TipoGraficaEnum.U)
+                        graficarU();
                     break;
             }
         }
     }//GEN-LAST:event_jButton_aplicarCambiosActionPerformed
-
         
     private void graficarXBarR(){
         if(Constante.DEBUG)
@@ -529,7 +532,84 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         //Ejecutar comando.
         callCommandExecutor(comandoFinal);
     }
-            
+    
+    private void graficarC(){
+        System.out.println("INI-graficarC()");
+      
+        List<Double> datosEnFila = graficoPorAtributo.getDatos();
+
+        //Eliminar los puntos de las listas de datos a graficar.
+        if(Constante.DEBUG)
+            System.out.println("Eliminando puntos fuera de limites.");
+        int contadorMuestra = 1;
+        for(PuntoFueraLimite punto:eliminados){
+            int muestra = punto.getMuestra();
+            datosEnFila.remove(muestra-contadorMuestra);
+            contadorMuestra++;
+        }
+        
+        String datosC                = Util.obtenerDatosCsvDesdeLista(datosEnFila);
+        Double sumatoria             = Util.sumarElementos(datosEnFila);
+        Double cBarra                = sumatoria/datosEnFila.size();
+        Double limiteControlSuperior = cBarra + 3*Math.sqrt(cBarra);
+        Double lineaCentral          = cBarra;
+        Double limiteControlInferior = cBarra - 3*Math.sqrt(cBarra);
+
+        String parametros = limiteControlInferior+" "+limiteControlSuperior+" "+lineaCentral+" \""+datosC+"\"";
+
+        String rutaDelScript = Util.getHome()+Constante.SCRIPTS+Constante.FILE_C_PY;
+        String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
+        String comandoFinal  = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+
+        if(Constante.DEBUG)
+            System.out.println("Comando Final:"+comandoFinal);
+
+        //Ejecutar comando.
+        callCommandExecutor(comandoFinal);        
+    }
+    
+    private void graficarU(){
+        System.out.println("INI-graficarU()");
+      
+        List<Double> datosEnFila = graficoPorAtributo.getDatos();
+        DecimalFormat df = new DecimalFormat(Constante.STR_CERO_CERO);
+        int n = graficoPorAtributo.getTamanioMuestra();
+
+        //Eliminar los puntos de las listas de datos a graficar.
+        if(Constante.DEBUG)
+            System.out.println("Eliminando puntos fuera de limites.");
+        int contadorMuestra = 1;
+        for(PuntoFueraLimite punto:eliminados){
+            int muestra = punto.getMuestra();
+            datosEnFila.remove(muestra-contadorMuestra);
+            contadorMuestra++;
+        }
+                
+        List<Double> disconformidadesPorUnidad = Util.getDisconformidadesPorUnidad(datosEnFila,n);
+        String datosU                          = Util.obtenerDatosCsvDesdeLista(disconformidadesPorUnidad);
+        Double sumatoria                       = Util.sumarElementos(disconformidadesPorUnidad);
+        Double uBarra                          = sumatoria/disconformidadesPorUnidad.size();
+
+        Double limiteControlSuperior = uBarra + 3*Math.sqrt(uBarra/n);
+        Double lineaCentral          = uBarra;
+        Double limiteControlInferior = uBarra - 3*Math.sqrt(uBarra/n);
+
+        String nuevoLimiteControlSuperior = df.format(limiteControlSuperior).replace(Constante.STR_COMMA_SEPARATOR, Constante.STR_PUNTO);
+        String nuevaLineaCentral          = df.format(lineaCentral).replace(Constante.STR_COMMA_SEPARATOR, Constante.STR_PUNTO);
+        String nuevolimiteControlInferior = df.format(limiteControlInferior).replace(Constante.STR_COMMA_SEPARATOR, Constante.STR_PUNTO);
+
+        String parametros = nuevolimiteControlInferior+" "+nuevoLimiteControlSuperior+" "+nuevaLineaCentral+" \""+datosU+"\"";
+
+        String rutaDelScript = Util.getHome()+Constante.SCRIPTS+Constante.FILE_U_PY;
+        String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
+        String comandoFinal  = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+
+        if(Constante.DEBUG)
+            System.out.println("Comando Final:"+comandoFinal);
+        //Ejecutar comando.
+        callCommandExecutor(comandoFinal);        
+    }
+    
     private void callCommandExecutor(final String comando){
         if(Constante.DEBUG)
             System.out.println("INI-callCommandExecutor()");

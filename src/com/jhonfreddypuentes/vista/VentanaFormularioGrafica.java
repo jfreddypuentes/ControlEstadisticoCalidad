@@ -694,6 +694,21 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
+                    graficoPA = new GraficoPorAtributo();
+                    graficoPorAtributo = true;
+
+                    graficoPA.setTipoGrafico(TipoGraficaEnum.C);
+
+                    graficoPA.setData(data);
+                    graficoPA.setDatos(datosEnFila);
+                    graficoPA.setDatosEntrada(datosEnFila);
+
+                    graficoPA.setLimite(new Limite(limiteControlInferior,limiteControlSuperior,lineaCentral));
+
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+
+                    graficoPA.setComando(comando);
+                    
                 }else if(this.tipoGrafica == TipoGraficaEnum.U){
                     DecimalFormat df = new DecimalFormat(Constante.STR_CERO_CERO);
                     int n = Integer.valueOf(jTextField_tamanio_muestra.getText());
@@ -716,6 +731,22 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     rutaDelScript        = home_scripts+Constante.FILE_U_PY;
                     String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                                        
+                    graficoPA = new GraficoPorAtributo();
+                    graficoPorAtributo = true;
+
+                    graficoPA.setTipoGrafico(TipoGraficaEnum.U);
+
+                    graficoPA.setData(data);
+                    graficoPA.setDatos(Util.obtenerListaDoubleDesdeCsv(datosU));
+                    graficoPA.setDatosEntrada(datosEnFila);
+                    graficoPA.setTamanioMuestra(n);
+
+                    graficoPA.setLimite(new Limite(limiteControlInferior,limiteControlSuperior,lineaCentral));
+
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+
+                    graficoPA.setComando(comando);
                 }
                 
                 //Ejecutar comando.
