@@ -52,39 +52,6 @@ public class Util {
         return rutaCompleta.replace(Constante.PROJECT_JAR_NAME, Constante.STR_EMPTY).substring(1)+Constante.HOME_NAME;
     }
     
-    /**
-     * Verificar si python esta instalado. Lo hace ejecutando un archivo python
-     * y conociendo el resultado. Para validar si pip esta instalado, enviar el parametro en true.
-     * @param validarPip
-     * @see https://bytes.com/topic/python/insights/949995-three-ways-run-python-programs-java
-     * @return 
-     */
-    public static boolean isPythonInstalled(boolean validarPip){
-        boolean estaInstalado = false;
-        
-        try{
-            String programa = getProgramaSumaDosNumerosPython(validarPip).toString();
-            
-            try (BufferedWriter out = new BufferedWriter(new FileWriter(Constante.FILE_TEST_PYTHON_PY))) {
-                out.write(programa);
-            }
-            
-            final int primerNumero      = Constante.NUMERO_DIEZ;
-            final int segundoNumero     = Constante.NUMERO_DOCE;
-            final int resultadoEsperado = primerNumero+segundoNumero;
-                        
-            Process proceso       = Runtime.getRuntime().exec(Constante.COMANDO_PYTHON+Constante.FILE_TEST_PYTHON_PY+" "+primerNumero+" "+segundoNumero);
-            BufferedReader salida = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
-            int resultadoPython   = new Integer(salida.readLine());
-            
-            estaInstalado = resultadoPython==resultadoEsperado;
-                        
-        }catch(IOException | NumberFormatException e){
-            estaInstalado = false;
-        }
-        return estaInstalado;
-    }
-        
     private static StringBuilder getProgramaSumaDosNumerosPython(boolean importPip){
         StringBuilder programa = new StringBuilder();
         programa.append(Constante.COMANDO_IMPORT_SYS);

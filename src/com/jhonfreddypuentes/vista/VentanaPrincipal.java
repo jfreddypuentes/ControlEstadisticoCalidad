@@ -7,13 +7,10 @@ package com.jhonfreddypuentes.vista;
 
 import com.jhonfreddypuentes.constante.Constante;
 import com.jhonfreddypuentes.constante.TipoGraficaEnum;
-import com.jhonfreddypuentes.process.InstallPylabProcess;
-import com.jhonfreddypuentes.process.InstallPythonProcess;
 import com.jhonfreddypuentes.util.DataTransito;
 import com.jhonfreddypuentes.util.Util;
 import java.awt.Desktop;
 import java.io.File;
-import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -61,11 +58,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemGraficoU = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem_installPython = new javax.swing.JMenuItem();
-        jMenuItem_checkPython = new javax.swing.JMenuItem();
-        jMenuItem_checkPIP = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Control Estadístico");
@@ -180,42 +172,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Pruebas");
-
-        jMenuItem_installPython.setText("Install python");
-        jMenuItem_installPython.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem_installPythonActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem_installPython);
-
-        jMenuItem_checkPython.setText("Check python");
-        jMenuItem_checkPython.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem_checkPythonActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem_checkPython);
-
-        jMenuItem_checkPIP.setText("Check PIP");
-        jMenuItem_checkPIP.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem_checkPIPActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem_checkPIP);
-
-        jMenuItem4.setText("Install numpy");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem4);
-
-        jMenuBar1.add(jMenu3);
-
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -278,49 +234,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if (Desktop.isDesktopSupported()) {
             try {
                 File myFile = new File(Util.getHome()+Constante.RUTA_MANUAL_USUARIO);
-                int a = 1/0;
                 Desktop.getDesktop().open(myFile);
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, Constante.ERROR_AL_ABRIR_MANUAL_PDF);
             }
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
-
-    private void jMenuItem_installPythonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_installPythonActionPerformed
-        
-        try{
-            if(Util.isPythonInstalled(false)){
-                mostrarMensaje("Python ESTÁ instalado. No es necesario que lo instales de nuevo.");
-                //JOptionPane.showMessageDialog(null, "Python ESTÁ instalado. No es necesario que lo instales de nuevo.");
-            }else{
-                InstallPythonProcess p = new  InstallPythonProcess();
-                p.execute();
-            }
-        }catch(Exception e){
-            mostrarMensaje(e.getMessage());
-            //JOptionPane.showMessageDialog(null,e.getMessage());
-        }
-    }//GEN-LAST:event_jMenuItem_installPythonActionPerformed
-
-    private void jMenuItem_checkPythonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_checkPythonActionPerformed
-        if(Util.isPythonInstalled(false)){
-            mostrarMensaje("Python ESTÁ instalado...");
-            //JOptionPane.showMessageDialog(null, "Python ESTÁ instalado...");
-        }else{
-            mostrarMensaje("Python NO ESTÁ instalado...");
-            //JOptionPane.showMessageDialog(null, "Python NO ESTÁ instalado...");
-        }
-    }//GEN-LAST:event_jMenuItem_checkPythonActionPerformed
-
-    private void jMenuItem_checkPIPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_checkPIPActionPerformed
-        if(Util.isPythonInstalled(true)){
-            mostrarMensaje("PIP esta instalado...");
-            //JOptionPane.showMessageDialog(null, "PIP esta instalado...");
-        }else{
-            mostrarMensaje("PIP no esta instalado...");
-            //JOptionPane.showMessageDialog(null, "PIP no esta instalado...");
-        }
-    }//GEN-LAST:event_jMenuItem_checkPIPActionPerformed
 
     private void jMenuItem_xbarsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_xbarsActionPerformed
         mostrarVentana(TipoGraficaEnum.X_BARRA_S);
@@ -329,13 +248,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void jMenuItem_xmrActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_xmrActionPerformed
         mostrarVentana(TipoGraficaEnum.X_M_R);
     }//GEN-LAST:event_jMenuItem_xmrActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-
-        InstallPylabProcess p = new  InstallPylabProcess();
-        p.execute();
-            
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItemGraficoPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGraficoPActionPerformed
         mostrarVentana(TipoGraficaEnum.P);
@@ -432,21 +344,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuGraficosPorAtributos;
     private javax.swing.JMenu jMenuGraficosPorVariables;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItemGraficoC;
     private javax.swing.JMenuItem jMenuItemGraficoNP;
     private javax.swing.JMenuItem jMenuItemGraficoP;
     private javax.swing.JMenuItem jMenuItemGraficoU;
-    private javax.swing.JMenuItem jMenuItem_checkPIP;
-    private javax.swing.JMenuItem jMenuItem_checkPython;
-    private javax.swing.JMenuItem jMenuItem_installPython;
     private javax.swing.JMenuItem jMenuItem_xbarr;
     private javax.swing.JMenuItem jMenuItem_xbars;
     private javax.swing.JMenuItem jMenuItem_xmr;
