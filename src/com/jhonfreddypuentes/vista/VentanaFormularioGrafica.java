@@ -381,7 +381,9 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
         
         try{
             if(jRadioButton_SI.isSelected()){
-                mediaConocida = Double.parseDouble(jTextField_mediaConocidaDelProceso.getText().replace(",", "."));
+                if(!jTextField_mediaConocidaDelProceso.getText().trim().isEmpty()){
+                    mediaConocida = Double.parseDouble(jTextField_mediaConocidaDelProceso.getText().replace(",", "."));
+                }
             }
             
             if(validacionOK && validacionMediaConocidad){
@@ -397,26 +399,51 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     private void jButton_cargarDatosManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_cargarDatosManualActionPerformed
         
         boolean validacionOK = true;
+        boolean validacionMediaConocidad = true;
+        
+        if(jRadioButton_SI.isSelected()){
+            String mediaConocidaDelProceso = jTextField_mediaConocidaDelProceso.getText();
+            validacionMediaConocidad = !(mediaConocidaDelProceso==null || mediaConocidaDelProceso.isEmpty());
+        }
+        
+        if(!validacionMediaConocidad){
+            JOptionPane.showMessageDialog(this, Constante.VALIDACION_MEDIA_CONOCIDA);
+        }
+        
         if((this.tipoGrafica==TipoGraficaEnum.P || this.tipoGrafica==TipoGraficaEnum.NP)&& !checkTamanioMuestra()){
             validacionOK = false;
             JOptionPane.showMessageDialog(this, Constante.VALIDACION_TAMANIO_MUESTRA);
         }
-        if(validacionOK){
-            VentanaIngresoDatosManual ventana = null;
+        
+        try{
+            if(jRadioButton_SI.isSelected()){
+                if(!jTextField_mediaConocidaDelProceso.getText().trim().isEmpty()){
+                    mediaConocida = Double.parseDouble(jTextField_mediaConocidaDelProceso.getText().replace(",", "."));
+                }
+            }
             
-            if(this.tipoGrafica==TipoGraficaEnum.P || this.tipoGrafica==TipoGraficaEnum.NP){
-                int tamMuestra = Integer.valueOf(jTextField_tamanio_muestra.getText());
-                ventana = new VentanaIngresoDatosManual(tamMuestra);
-            }else{
-                ventana = new VentanaIngresoDatosManual();
-            }            
+            if(validacionOK && validacionMediaConocidad){
+                VentanaIngresoDatosManual ventana = null;
+
+                if(this.tipoGrafica==TipoGraficaEnum.P || this.tipoGrafica==TipoGraficaEnum.NP){
+                    int tamMuestra = Integer.valueOf(jTextField_tamanio_muestra.getText());
+                    ventana = new VentanaIngresoDatosManual(tamMuestra);
+                }else{
+                    ventana = new VentanaIngresoDatosManual();
+                }            
+
+                ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                ventana.setLocationRelativeTo(null);
+                ventana.setTitle(Constante.INGRESO_MANUAL);
+                ventana.setTipoGrafica(tipoGrafica);
+                ventana.setVisible(true);
+            }
             
-            ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            ventana.setLocationRelativeTo(null);
-            ventana.setTitle(Constante.INGRESO_MANUAL);
-            ventana.setTipoGrafica(tipoGrafica);
-            ventana.setVisible(true);
+        }catch(Exception e){
+            jTextField_mediaConocidaDelProceso.setText("");
+            JOptionPane.showMessageDialog(this, Constante.VALIDACION_MEDIA_CONOCIDA_DATO);
         }
+        
     }//GEN-LAST:event_jButton_cargarDatosManualActionPerformed
 
     private void jTextField_tamanio_muestraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField_tamanio_muestraActionPerformed
