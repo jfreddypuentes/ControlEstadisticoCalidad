@@ -133,20 +133,10 @@ public class Constante {
     
     /** HOME. */
     public static final String HOME_NAME                      = "home";
-    public static final String RUTA_CONFIG_CONFIG_PROPERTIES  = "/config/config.properties";
-    public static final String RUTA_CONFIG_MODULES_PROPERTIES = "/config/modules.properties";
-    public static final String RUTA_PYTHON_INSTALLER          = "/installers/python";
     public static final String RUTA_PYTHON27                  = "/installers/python27/python ";
     public static final String SCRIPTS                        = "/scripts/";
     public static final String RUTA_MANUAL_USUARIO            = "/guide/manual.pdf";
-    /**
-     * Claves de propiedades.
-     */
-    public static final String KEY_PYTHON_INSTALLER_VERSION = "python.installer.version";
-    public static final String KEY_PYTHON_INSTALLER_FOLDER  = "python.installer.folder";
-    public static final String KEY_PYTHON_INSTALLER_MSI     = "python.installer.msi";
-    public static final String KEY_PYTHON_INSTALLER_EXT     = "python.installer.ext";
-    
+   
     /** 
      * Utils. 
      */
@@ -157,8 +147,6 @@ public class Constante {
     public static final String STR_BUILD_CLASES    = "/build/classes";
     
     /** Scripts python. */
-    public static final String FILE_TEST_PYTHON_PY = "checkPython.py";
-    public static final String FILE_GET_PYTHON_PY  = "get-python.py";
     public static final String FILE_X_BAR_PY       = "xbar.py";
     public static final String FILE_X_BAR_S_PY     = "xbars.py";
     public static final String FILE_X_M_R_PY       = "xmr.py";
@@ -166,7 +154,6 @@ public class Constante {
     public static final String FILE_NP_PY          = "np.py";
     public static final String FILE_C_PY           = "c.py";
     public static final String FILE_U_PY           = "u.py";
-    
     public static final String FILE_X_BAR_EXTENDIDO_PY = "xbar_extendido.py";
     
     /** 
@@ -186,15 +173,10 @@ public class Constante {
      * Comandos python.
      */
     public static final String COMANDO_PYTHON     = "python ";
-    public static final String COMANDO_IMPORT_SYS = "import sys"+STR_SALTO_LINEA;
-    public static final String COMANDO_IMPORT_PIP = "import pip"+STR_SALTO_LINEA;
-    public static final String COMANDO_PRINT_INT  = "print int(sys.argv[1])+int(sys.argv[2])"+STR_SALTO_LINEA;
     
     /**
      * Numeros.
      */
-    public static final int NUMERO_DIEZ      = 10;
-    public static final int NUMERO_DOCE      = 12;
     public static final String STR_CERO_CERO = "0.0000";
    
     /**

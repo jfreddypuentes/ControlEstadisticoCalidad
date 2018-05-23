@@ -292,11 +292,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventanaFormulario.setTipoGrafica(tipo);
         ventanaFormulario.setVisible(true);
     }
-    
-    private void mostrarMensaje(String mensaje){
-        JOptionPane.showMessageDialog(null, mensaje);
-    }
-    
+        
     /**
      * @param args the command line arguments
      */

@@ -64,7 +64,6 @@ public class Grafico {
         if(datos!=null && !datos.isEmpty()){
             if(this.limite!=null && this.limite.getLimiteInferior()!=null && this.limite.getLimiteInferior()!=null){
                 for (Double dato : datos) {
-                  System.out.println(dato+">="+this.limite.getLimiteSuperior()+" || "+dato+" <= "+this.limite.getLimiteInferior()+" : "+(dato >= this.limite.getLimiteSuperior() || dato <= this.limite.getLimiteInferior()));
                     if (dato >= this.limite.getLimiteSuperior() || dato <= this.limite.getLimiteInferior()) {
                         puntosFuera.add(new PuntoFueraLimite(contadorMuestra, dato,null));
                     }

@@ -8,12 +8,7 @@ package com.jhonfreddypuentes.util;
 import com.jhonfreddypuentes.constante.Constante;
 import com.jhonfreddypuentes.dto.PuntoFueraLimite;
 import com.jhonfreddypuentes.vista.VentanaPrincipal;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,16 +47,6 @@ public class Util {
         return rutaCompleta.replace(Constante.PROJECT_JAR_NAME, Constante.STR_EMPTY).substring(1)+Constante.HOME_NAME;
     }
     
-    private static StringBuilder getProgramaSumaDosNumerosPython(boolean importPip){
-        StringBuilder programa = new StringBuilder();
-        programa.append(Constante.COMANDO_IMPORT_SYS);
-        if(importPip){
-            programa.append(Constante.COMANDO_IMPORT_PIP);
-        }
-        programa.append(Constante.COMANDO_PRINT_INT);
-        return programa;
-    }
-    
     public static List<Double> calcularMediasAritmeticasPorFila(Double[][] data){
         Util.print("[INI] - calcularMediasAritmeticasPorFila");
         List<Double> listaDeMedias = new ArrayList<>();
@@ -86,17 +71,9 @@ public class Util {
         
         for (Double[] fila : data) {
             for(int i=0;i<fila.length;i++){
-                System.out.println("fila["+i+"]:"+fila[i]);
                 sumatoria = sumatoria + fila[i];
-                System.out.println("sumatoria:"+sumatoria);
                 contador++;
             }
-            /*
-            for (Double dato : fila) {
-                sumatoria = sumatoria + dato;
-            }*/
-            //listaDeMedias.add(sumatoria/fila.length);
-            System.out.println("sumatoria/contador : "+sumatoria/contador);
             listaDeMedias.add(sumatoria/contador);
             sumatoria=0;
         }
@@ -139,11 +116,7 @@ public class Util {
         
         int n = fila.length-1;
         Double desviacion = 0.0;
-        /*     
-        for(Double x:fila){
-            desviacion = desviacion + Math.sqrt(((Math.pow(x-media, 2))/(n)));
-        }
-        */
+        
         for(Double x:fila){
             desviacion = desviacion + (Math.pow(x-media, 2)/(n));
         }
@@ -155,7 +128,6 @@ public class Util {
     }
     
     public static Double obtenerRango(Double[] datos){
-        Util.print("[INI] - obtenerRango");
         Double rango = (double)0;
         Double mayor = (double)0;
         Double menor = (double)0;
@@ -173,12 +145,8 @@ public class Util {
                 menor=dato;
             }
         }
-        
-        Util.print("mayor:"+mayor+" menor: "+menor);
-        
+                
         rango = mayor - menor;
-        Util.print("Rango : "+rango);
-        Util.print("[FIN] - obtenerRango");
         return rango;
     }
     
@@ -380,12 +348,7 @@ public class Util {
     public static List<Double> getDisconformidadesPorUnidad(List<Double> disconformidades,int tamanioMuestra){
         List<Double> disconformidadesPorUnidad = new ArrayList<>();
         for(Double disconformidad: disconformidades){
-            System.out.println("disconformidad/tamanioMuestra => ["+disconformidad/tamanioMuestra+"]");
             disconformidadesPorUnidad.add(disconformidad/tamanioMuestra);
-//            int n = disconformidadesPorUnidad.size();
-//            if(n==tamanioMuestra){
-//                break;
-//            }
         }
         return disconformidadesPorUnidad;
     }
