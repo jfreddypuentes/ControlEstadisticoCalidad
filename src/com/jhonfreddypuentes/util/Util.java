@@ -302,6 +302,8 @@ public class Util {
         for (int fila = 0 ; fila < cantidadDatos ; fila++){
             for (int columna = 0 ; columna < tamanioMuestra; columna++){
                 try{
+                    String dato = modelo.getValueAt(fila,columna).toString().trim();
+                    dato = (dato!=null && !dato.isEmpty())?dato.replace(",","."):dato;
                     tableData[fila][columna] = Double.parseDouble(modelo.getValueAt(fila,columna).toString());
                 }catch(Exception e){
                     throw new Exception("Error en la celda ["+(fila+1)+","+(columna+1)+"]");

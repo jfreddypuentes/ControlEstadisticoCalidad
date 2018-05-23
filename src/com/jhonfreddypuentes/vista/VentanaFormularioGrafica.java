@@ -427,9 +427,9 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
 
                 if(this.tipoGrafica==TipoGraficaEnum.P || this.tipoGrafica==TipoGraficaEnum.NP){
                     int tamMuestra = Integer.valueOf(jTextField_tamanio_muestra.getText());
-                    ventana = new VentanaIngresoDatosManual(tamMuestra);
+                    ventana = new VentanaIngresoDatosManual(tamMuestra,mediaConocida);
                 }else{
-                    ventana = new VentanaIngresoDatosManual();
+                    ventana = new VentanaIngresoDatosManual(mediaConocida);
                 }            
 
                 ventana.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -556,8 +556,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     datos         = Util.obtenerDatosCsvDesdeLista(listaDatos);
                     String datosR = Util.obtenerDatosCsvDesdeLista(rangosPorFila);
                     
-                    System.out.println("MEDIA CALCULADA:"+mediaDeMedias);
-                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
                     //¿Se conoce la media del proceso?
                     if(mediaConocida!=null){
                         mediaDeMedias = mediaConocida;
@@ -614,8 +612,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     double B4 = Constante.LISTA_B4.get(tamanioMuestra);
                     double A3 = Constante.LISTA_A3.get(tamanioMuestra);
                     
-                    System.out.println("MEDIA CALCULADA:"+mediaDeMedias);
-                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
                     //¿Se conoce la media del proceso?
                     if(mediaConocida!=null){
                         mediaDeMedias = mediaConocida;
@@ -646,15 +642,9 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     
                     graficoPV.setDesviacionPorFila(desviacionPorFila);
                     
-                    //datos.
-                    //graficoPV.setDatos(Util.obtenerListaDoubleDesdeCsv(datosS));
-                    //graficoPV.setDatosSegundoGrafico(Util.obtenerListaDoubleDesdeCsv(datos));
                     graficoPV.setDatos(Util.obtenerListaDoubleDesdeCsv(datos));
                     graficoPV.setDatosSegundoGrafico(Util.obtenerListaDoubleDesdeCsv(datosS));
                     
-                    //limites.
-                    //Limite limite  = new Limite(limiteControlInferiorS,limiteControlSuperiorS,mediaDeMedias);
-                    //Limite limite2 = new Limite(limiteControlInferiorXS, limiteControlSuperiorXS, mediaDeDesviaciones);
                     Limite limite  = new Limite(limiteControlInferiorXS,limiteControlSuperiorXS,mediaDeMedias);
                     Limite limite2 = new Limite(limiteControlInferiorS, limiteControlSuperiorS, mediaDeDesviaciones);
                     graficoPV.setLimite(limite);
@@ -674,8 +664,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     String datosX               = Util.obtenerDatosCsvDesdeLista(datosEnFila);
                     String datosRM              = Util.obtenerDatosCsvDesdeLista(rangosMoviles);
                     
-                    System.out.println("MEDIA CALCULADA:"+mediaGeneral);
-                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
                     //¿Se conoce la media del proceso?
                     if(mediaConocida!=null){
                         mediaGeneral = mediaConocida;
@@ -709,13 +697,10 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     
                     //datos.
                     graficoPV.setDatos(Util.obtenerListaDoubleDesdeCsv(datosX));
-                    //graficoPV.setDatosSegundoGrafico(Util.obtenerListaDoubleDesdeCsv(datosRM));
                     
                     //limites.
                     Limite limite  = new Limite(limiteInferiorParaX,limiteSuperiorParaX,mediaGeneral);
-                    //Limite limite2 = new Limite(limiteInferiorParaR, limiteSuperiorParaR, mediaDeRangosMoviles);
                     graficoPV.setLimite(limite);
-                    //graficoPV.setLimiteSegundoGrafico(limite2);
                     
                     //Comando.
                     Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
@@ -736,8 +721,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                         
                         Double pMedia              = sumatoria/mxn;
                         
-                        System.out.println("MEDIA CALCULADA:"+pMedia);
-                        System.out.println("MEDIA CONOCIDA :"+mediaConocida);
                         //¿Se conoce la media del proceso?
                         if(mediaConocida!=null){
                             pMedia = mediaConocida;
@@ -847,8 +830,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     Double sumatoria             = Util.sumarElementos(datosEnFila);
                     Double cBarra                = sumatoria/datosEnFila.size();
                     
-                    System.out.println("MEDIA CALCULADA:"+cBarra);
-                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
                     //¿Se conoce la media del proceso?
                     if(mediaConocida!=null){
                         cBarra = mediaConocida;
@@ -888,8 +869,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     Double sumatoria                       = Util.sumarElementos(disconformidadesPorUnidad);
                     Double uBarra                          = sumatoria/disconformidadesPorUnidad.size();
                     
-                    System.out.println("MEDIA CALCULADA:"+uBarra);
-                    System.out.println("MEDIA CONOCIDA :"+mediaConocida);
                     //¿Se conoce la media del proceso?
                     if(mediaConocida!=null){
                         uBarra = mediaConocida;

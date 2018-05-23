@@ -8,11 +8,18 @@ package com.jhonfreddypuentes.vista;
 import com.jhonfreddypuentes.cmd.Cmd;
 import com.jhonfreddypuentes.constante.Constante;
 import com.jhonfreddypuentes.constante.TipoGraficaEnum;
+import com.jhonfreddypuentes.dto.Comando;
+import com.jhonfreddypuentes.dto.GraficoPorAtributo;
+import com.jhonfreddypuentes.dto.GraficoPorVariable;
+import com.jhonfreddypuentes.dto.Limite;
+import com.jhonfreddypuentes.dto.PuntoFueraLimite;
 import com.jhonfreddypuentes.util.Util;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,23 +32,27 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
     private TipoGraficaEnum tipoGrafica;
     private int tamMuestra;
     private int ene;
+    private Double mediaConocida;
     
     /**
      * Creates new form VentanaIngresoDatosManual
+     * @param mediaConocida
      */
-    public VentanaIngresoDatosManual() {
+    public VentanaIngresoDatosManual(Double mediaConocida) {
         initComponents();
         cargarValidadores();
         tipoGrafica = null;
+        this.mediaConocida = mediaConocida;
     }
     
-    public VentanaIngresoDatosManual(int tamanioMuestra) {
+    public VentanaIngresoDatosManual(int tamanioMuestra,Double mediaConocida) {
         initComponents();
         tipoGrafica   = null;
         this.tamMuestra = tamanioMuestra;
         jLabel_tamMuestra.setText("Cantidad Muestra");
         jTextField_tamanioMuestra.setText("1");
         jTextField_tamanioMuestra.setEditable(false);
+        this.mediaConocida = mediaConocida;
     }
 
     public TipoGraficaEnum getTipoGrafica() {
@@ -109,6 +120,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
         jButton_graficar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ingreso de datos"));
 
@@ -144,7 +156,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(182, 182, 182)
                         .addComponent(jButton_crearTabla)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -217,8 +229,8 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -241,8 +253,8 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -312,7 +324,11 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
             List<Double> rangosPorFila            = null;
             List<Double> desviacionPorFila        = null;
             
-            //String tamMuestra = jTextField_tamanioMuestra.getText().trim();
+            GraficoPorVariable graficoPV = null;
+            GraficoPorAtributo graficoPA = null;
+            boolean graficoPorVariable   = false;
+            boolean graficoPorAtributo   = false;
+            
             Integer tamanioMuestra   = Integer.parseInt(jTextField_tamanioMuestra.getText().trim());
             
             if(this.tipoGrafica!=TipoGraficaEnum.P && this.tipoGrafica!=TipoGraficaEnum.NP &&
@@ -325,7 +341,10 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                 mediaDeMedias = Util.obtenerMediaDeMedias(mediasAritmeticasPorFila);
                 mediaDeRangos = Util.obtenerMediaDeRangos(rangosPorFila);
 
-                
+                /** Uso de media del proceso si es conocida. */
+                if(this.mediaConocida!=null){
+                    mediaDeMedias = this.mediaConocida;
+                }
 
                 Double factorA2 = Constante.LISTA_A2.get(tamanioMuestra);
                 Double factorD3 = Constante.LISTA_D3.get(tamanioMuestra);
@@ -358,9 +377,35 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
 
                     rutaDelScript            = home_scripts+Constante.FILE_X_BAR_PY;
                     String comandoFinalXBarR = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
-                    //String comandoFinalXBarR = Constante.COMANDO_PYTHON+rutaDelScript+" "+parametros;
                     comandoFinal             = comandoFinalXBarR.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
 
+                    graficoPV = new GraficoPorVariable();
+                    graficoPorVariable = true;
+                    //Tipo.
+                    graficoPV.setTipoGrafico(TipoGraficaEnum.X_BARRA_R);
+                    
+                    //Tamaño de la muestra.
+                    graficoPV.setTamanioMuestra(tamanioMuestra);
+                    
+                    //Data excel.
+                    graficoPV.setData(data);
+                    
+                    graficoPV.setRangosPorFila(rangosPorFila);
+                    
+                    //datos.
+                    graficoPV.setDatos(Util.obtenerListaDoubleDesdeCsv(datos));
+                    graficoPV.setDatosSegundoGrafico(Util.obtenerListaDoubleDesdeCsv(datosR));
+                    
+                    //limites.
+                    Limite limite  = new Limite(limiteControlInferiorEquisBarra,limiteControlSuperiorEquisBarra,mediaDeMedias);
+                    Limite limite2 = new Limite(limiteControlInferiorErre, limiteControlSuperiorErre, mediaDeRangos);
+                    graficoPV.setLimite(limite);
+                    graficoPV.setLimiteSegundoGrafico(limite2);
+                    
+                    //Comando.
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+                    graficoPV.setComando(comando);
+                    
                 }else if(this.tipoGrafica==TipoGraficaEnum.X_BARRA_S){
                     //Graficar equis barra s
                     Double limiteControlSuperiorS  = (double)0;
@@ -388,8 +433,32 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     
                     rutaDelScript = home_scripts+Constante.FILE_X_BAR_S_PY;
                     String comandoFinalXBarS = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
-                    //String comandoFinalXBarS = Constante.COMANDO_PYTHON+rutaDelScript+" "+parametros;
                     comandoFinal             = comandoFinalXBarS.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                    
+                    graficoPV = new GraficoPorVariable();
+                    graficoPorVariable = true;
+                    //Tipo.
+                    graficoPV.setTipoGrafico(TipoGraficaEnum.X_BARRA_S);
+                    
+                    //Tamaño de la muestra.
+                    graficoPV.setTamanioMuestra(tamanioMuestra);
+                    
+                    //Data excel.
+                    graficoPV.setData(data);
+                    
+                    graficoPV.setDesviacionPorFila(desviacionPorFila);
+                    
+                    graficoPV.setDatos(Util.obtenerListaDoubleDesdeCsv(datos));
+                    graficoPV.setDatosSegundoGrafico(Util.obtenerListaDoubleDesdeCsv(datosS));
+                    
+                    Limite limite  = new Limite(limiteControlInferiorXS,limiteControlSuperiorXS,mediaDeMedias);
+                    Limite limite2 = new Limite(limiteControlInferiorS, limiteControlSuperiorS, mediaDeDesviaciones);
+                    graficoPV.setLimite(limite);
+                    graficoPV.setLimiteSegundoGrafico(limite2);
+                    
+                    //Comando.
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+                    graficoPV.setComando(comando);
                     
                 }else if(this.tipoGrafica==TipoGraficaEnum.X_M_R){
                     
@@ -399,6 +468,11 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     Double mediaDeRangosMoviles = Util.calcularMedia(rangosMoviles);
                     String datosX               = Util.obtenerDatosCsvDesdeLista(datosEnFila);
                     String datosRM              = Util.obtenerDatosCsvDesdeLista(rangosMoviles);
+                    
+                    /** Uso de media del proceso si es conocida. */
+                    if(this.mediaConocida!=null){
+                        mediaGeneral = this.mediaConocida;
+                    }
                     
                     Double limiteSuperiorParaX = mediaGeneral + 3 * (mediaDeRangosMoviles/1.128);
                     Double limiteInferiorParaX = mediaGeneral - 3 * (mediaDeRangosMoviles/1.128);
@@ -411,8 +485,31 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     
                     rutaDelScript = home_scripts+Constante.FILE_X_M_R_PY;
                     String comandoFinalXBarS = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
-                    //String comandoFinalXBarS = Constante.COMANDO_PYTHON+rutaDelScript+" "+parametros;
                     comandoFinal             = comandoFinalXBarS.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                    
+                    graficoPV = new GraficoPorVariable();
+                    graficoPorVariable = true;
+                    //Tipo.
+                    graficoPV.setTipoGrafico(TipoGraficaEnum.X_M_R);
+                    
+                    //Tamaño de la muestra.
+                    graficoPV.setTamanioMuestra(tamanioMuestra);
+                    
+                    //Data excel.
+                    graficoPV.setData(data);
+                    
+                    graficoPV.setRangosMoviles(rangosMoviles);
+                    
+                    //datos.
+                    graficoPV.setDatos(Util.obtenerListaDoubleDesdeCsv(datosX));
+                    
+                    //limites.
+                    Limite limite  = new Limite(limiteInferiorParaX,limiteSuperiorParaX,mediaGeneral);
+                    graficoPV.setLimite(limite);
+                    
+                    //Comando.
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+                    graficoPV.setComando(comando);
                     
                 }else if(this.tipoGrafica == TipoGraficaEnum.P){
                     String tamanioMuestral = String.valueOf(this.tamMuestra);
@@ -426,6 +523,12 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                         Double mxn =  (double) tam * n;
                         Double division = sumatoria/mxn;
                         Double pMedia              = division;
+                        
+                        /** Uso de media del proceso si es conocida. */
+                        if(this.mediaConocida!=null){
+                            pMedia = this.mediaConocida;
+                        }
+                        
                         Double limiteSuperiorParaP = pMedia+3*Math.sqrt((pMedia*(1-pMedia))/n);
                         Double limiteInferiorParaP = pMedia-3*Math.sqrt((pMedia*(1-pMedia))/n);
                         String datosP              = Util.obtenerDatosCsvDesdeLista(datosEnFila,tam);
@@ -439,6 +542,27 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                         rutaDelScript        = home_scripts+Constante.FILE_P_PY;
                         String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
                         comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                        
+                        graficoPA = new GraficoPorAtributo();
+                        graficoPorAtributo = true;
+                        
+                        graficoPA.setTipoGrafico(TipoGraficaEnum.P);
+                        
+                        //Tamaño de la muestra.
+                        graficoPA.setTamanioMuestra(tam);
+                        
+                        graficoPA.setData(data);
+                        
+                        List<Double> datoss = Util.obtenerListaDoubleDesdeCsv(datosP);
+                        
+                        graficoPA.setDatos(datoss);
+                        graficoPA.setDatosEntrada(datosEnFila);
+                                                
+                        graficoPA.setLimite(new Limite(limiteInferiorParaP,limiteSuperiorParaP,pMedia));
+                        
+                        Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+                        
+                        graficoPA.setComando(comando);
                         
                     }else{  
                         JOptionPane.showMessageDialog(null, Constante.VALIDACION_TAMANIO_MUESTRA);
@@ -458,19 +582,45 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                         Double division = sumatoria/mxn;
                         Double pMedia   = division;
                         
+                        /** Uso de media del proceso si es conocida. */
+                        if(this.mediaConocida!=null){
+                            pMedia = this.mediaConocida;
+                        }
+                        
                         Double limiteSuperiorParaP = (tam*pMedia)+(3*Math.sqrt((tam*pMedia*(1-pMedia))));
                         Double limiteInferiorParaP = (tam*pMedia)-(3*Math.sqrt((tam*pMedia*(1-pMedia))));
-                        String datosP              = Util.obtenerDatosCsvDesdeLista(datosEnFila);
+                        String datosNP              = Util.obtenerDatosCsvDesdeLista(datosEnFila);
                         
                         String nuevoLimInf = df.format(limiteInferiorParaP).replace(",", ".");
                         String nuevoLimSup = df.format(limiteSuperiorParaP).replace(",", ".");
                         String nuevaPMedia = df.format(tam*pMedia).replace(",", ".");
                         
-                        parametros = nuevoLimInf+" "+nuevoLimSup+" "+nuevaPMedia+" \""+datosP+"\"";
+                        parametros = nuevoLimInf+" "+nuevoLimSup+" "+nuevaPMedia+" \""+datosNP+"\"";
                         
                         rutaDelScript        = home_scripts+Constante.FILE_NP_PY;
                         String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
                         comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                        
+                        graficoPA = new GraficoPorAtributo();
+                        graficoPorAtributo = true;
+                        
+                        graficoPA.setTipoGrafico(TipoGraficaEnum.NP);
+                        
+                        //Tamaño de la muestra.
+                        graficoPA.setTamanioMuestra(tam);
+                        
+                        graficoPA.setData(data);
+                        
+                        List<Double> datosNPDouble = Util.obtenerListaDoubleDesdeCsv(datosNP);
+                        
+                        graficoPA.setDatos(datosNPDouble);
+                        graficoPA.setDatosEntrada(datosEnFila);
+                                                
+                        graficoPA.setLimite(new Limite(limiteInferiorParaP,limiteSuperiorParaP,pMedia));
+                        
+                        Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+                        
+                        graficoPA.setComando(comando);
                         
                     }else{  
                         JOptionPane.showMessageDialog(null, Constante.VALIDACION_TAMANIO_MUESTRA);
@@ -480,21 +630,36 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     String datosC                = Util.obtenerDatosCsvDesdeLista(datosEnFila);
                     Double sumatoria             = Util.sumarElementos(datosEnFila);
                     Double cBarra                = sumatoria/datosEnFila.size();
+                    
+                    /** Uso de media del proceso si es conocida. */
+                    if(this.mediaConocida!=null){
+                        cBarra = this.mediaConocida;
+                    }
+                    
                     Double limiteControlSuperior = cBarra + 3*Math.sqrt(cBarra);
                     Double lineaCentral          = cBarra;
                     Double limiteControlInferior = cBarra - 3*Math.sqrt(cBarra);
-                    
-                    System.out.println("limiteControlSuperior : "+limiteControlSuperior);
-                    System.out.println("lineaCentral : "+lineaCentral);
-                    System.out.println("limiteControlInferior : "+limiteControlInferior);
-                    
+                                        
                     parametros = limiteControlInferior+" "+limiteControlSuperior+" "+lineaCentral+" \""+datosC+"\"";
-                    
-                    System.out.println("parametros : "+parametros);
-                    
+                                        
                     rutaDelScript        = home_scripts+Constante.FILE_C_PY;
                     String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                    
+                    graficoPA = new GraficoPorAtributo();
+                    graficoPorAtributo = true;
+
+                    graficoPA.setTipoGrafico(TipoGraficaEnum.C);
+
+                    graficoPA.setData(data);
+                    graficoPA.setDatos(datosEnFila);
+                    graficoPA.setDatosEntrada(datosEnFila);
+
+                    graficoPA.setLimite(new Limite(limiteControlInferior,limiteControlSuperior,lineaCentral));
+
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+
+                    graficoPA.setComando(comando);
                     
                 }else if(this.tipoGrafica == TipoGraficaEnum.U){
                     DecimalFormat df = new DecimalFormat(Constante.STR_CERO_CERO);
@@ -505,6 +670,11 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     Double sumatoria                       = Util.sumarElementos(disconformidadesPorUnidad);
                     Double uBarra                          = sumatoria/disconformidadesPorUnidad.size();
                     
+                    /** Uso de media del proceso si es conocida. */
+                    if(this.mediaConocida!=null){
+                        uBarra = this.mediaConocida;
+                    }
+                    
                     Double limiteControlSuperior = uBarra + 3*Math.sqrt(uBarra/n);
                     Double lineaCentral          = uBarra;
                     Double limiteControlInferior = uBarra - 3*Math.sqrt(uBarra/n);
@@ -512,26 +682,42 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     String nuevoLimiteControlSuperior = df.format(limiteControlSuperior).replace(Constante.STR_COMMA_SEPARATOR, Constante.STR_PUNTO);
                     String nuevaLineaCentral          = df.format(lineaCentral).replace(Constante.STR_COMMA_SEPARATOR, Constante.STR_PUNTO);
                     String nuevolimiteControlInferior = df.format(limiteControlInferior).replace(Constante.STR_COMMA_SEPARATOR, Constante.STR_PUNTO);
-                    
-                    System.out.println("limiteControlSuperior : "+nuevoLimiteControlSuperior);
-                    System.out.println("lineaCentral : "+nuevaLineaCentral);
-                    System.out.println("limiteControlInferior : "+nuevolimiteControlInferior);
-                    
+                                        
                     parametros = nuevolimiteControlInferior+" "+nuevoLimiteControlSuperior+" "+nuevaLineaCentral+" \""+datosU+"\"";
-                    
-                    System.out.println("parametros : "+parametros);
-                    
+                                        
                     rutaDelScript        = home_scripts+Constante.FILE_U_PY;
                     String comandoFinalP = Util.getHome()+Constante.RUTA_PYTHON27+rutaDelScript+" "+parametros;
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
+                    
+                    graficoPA = new GraficoPorAtributo();
+                    graficoPorAtributo = true;
+
+                    graficoPA.setTipoGrafico(TipoGraficaEnum.U);
+
+                    graficoPA.setData(data);
+                    graficoPA.setDatos(Util.obtenerListaDoubleDesdeCsv(datosU));
+                    graficoPA.setDatosEntrada(datosEnFila);
+                    graficoPA.setTamanioMuestra(n);
+
+                    graficoPA.setLimite(new Limite(limiteControlInferior,limiteControlSuperior,lineaCentral));
+
+                    Comando comando =  new Comando(parametros, rutaDelScript, comandoFinal);
+
+                    graficoPA.setComando(comando);
                 }
                 
                 //Ejecutar comando.
                 try{
-                    Util.print("EXECUTING COMMAND : ["+comandoFinal+"]");
                     commandExecutor.ejecutarComandoSinEspera(comandoFinal);
                 }catch(Exception e){
                     Util.print(e.getMessage());
+                }
+                
+                //Gestionar Grafico por fases.
+                if(graficoPorVariable){
+                    gestionarGraficoPorFases(graficoPV);
+                }else if(graficoPorAtributo){
+                    gestionarGraficoPorFases(graficoPA);
                 }
                 
             }else{
@@ -540,45 +726,124 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
             
         }catch(Exception e){
             Util.print(e.getMessage());
-            JOptionPane.showMessageDialog(this,"");
+            JOptionPane.showMessageDialog(this,e.getMessage());
         }
     }
     
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+    private void gestionarGraficoPorFases(GraficoPorVariable grafico){
+        List<PuntoFueraLimite> puntosFueraPrimerGrafico  = grafico.getPuntosFueraLimite();
+        List<PuntoFueraLimite> puntosFueraSegundoGrafico = grafico.getPuntosFueraLimiteSegundoGrafico();
+        
+        String tipoGraficoPrimerGrafico  = Constante.NO_APLICA;
+        String tipoGraficoSegundoGrafico = Constante.NO_APLICA;
+        
+        if(!puntosFueraPrimerGrafico.isEmpty() || !puntosFueraSegundoGrafico.isEmpty()){
+            List<PuntoFueraLimite> puntosFuera = new ArrayList<>();
+            
+            switch(grafico.getTipoGrafico()){
+                case X_BARRA_R:
+                    tipoGraficoPrimerGrafico  = Constante.EQUIS;
+                    tipoGraficoSegundoGrafico = Constante.ERRE;
                     break;
+                case X_BARRA_S:
+                    tipoGraficoPrimerGrafico  = Constante.EQUIS;
+                    tipoGraficoSegundoGrafico = Constante.ESE;
+                    break;
+                case X_M_R:
+                    tipoGraficoPrimerGrafico  = Constante.EQUIS;
+                    tipoGraficoSegundoGrafico = Constante.EME_ERRE;
+                    break;
+            }
+            
+            for(PuntoFueraLimite punto : puntosFueraPrimerGrafico){
+                punto.setTipoGrafico(tipoGraficoPrimerGrafico);
+                puntosFuera.add(punto);
+            }
+            
+            if(grafico.getTipoGrafico()!=TipoGraficaEnum.X_M_R){
+                for(PuntoFueraLimite punto : puntosFueraSegundoGrafico){
+                    punto.setTipoGrafico(tipoGraficoSegundoGrafico);
+                    puntosFuera.add(punto);
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(VentanaIngresoDatosManual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(VentanaIngresoDatosManual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(VentanaIngresoDatosManual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(VentanaIngresoDatosManual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            mostrarPuntosFueraYEliminar(grafico,puntosFuera);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new VentanaIngresoDatosManual().setVisible(true);
-            }
-        });
     }
-
+    
+    private void gestionarGraficoPorFases(GraficoPorAtributo grafico){
+      System.out.println("INI-gestionarGraficoPorFases(GraficoPorAtributo grafico)");
+        List<PuntoFueraLimite> puntosFueraGrafico = grafico.getPuntosFueraLimite();
+        
+        String tipoGraficoStr  = Constante.NO_APLICA;
+        
+        if(!puntosFueraGrafico.isEmpty()){
+          
+          List<PuntoFueraLimite> puntosFuera = new ArrayList<>();
+          
+          switch(grafico.getTipoGrafico()){
+              case P:
+                  tipoGraficoStr  = Constante.PE;
+                  break;
+              case NP:
+                  tipoGraficoStr  = Constante.ENE_PE;
+                  break;
+              case C:
+                  tipoGraficoStr  = Constante.SE;
+                  break;
+              case U:
+                  tipoGraficoStr  = Constante.UU;
+                  break;
+          }
+          
+          for(PuntoFueraLimite punto : puntosFueraGrafico){
+              punto.setTipoGrafico(tipoGraficoStr);
+              puntosFuera.add(punto);
+          }
+          mostrarPuntosFueraYEliminar(grafico,puntosFuera);
+        }
+    }
+    
+    private void mostrarPuntosFueraYEliminar(GraficoPorVariable grafico,List<PuntoFueraLimite> puntosMostrar){
+        final String mensaje = Constante.MENSAJE_PUNTOS_FUERA_DE_LIMITES.replace("{}", String.valueOf(puntosMostrar.size()));
+        final int resultado  = JOptionPane.showConfirmDialog(this,mensaje, Constante.TITLE_PUNTOS_FUERA, JOptionPane.YES_NO_OPTION);
+        
+        switch(resultado){
+            case 0:
+                VentanaPuntosFueraDeControl ventanaPuntosFueraDeControl = null;
+                ventanaPuntosFueraDeControl = new VentanaPuntosFueraDeControl(grafico,puntosMostrar);
+                ventanaPuntosFueraDeControl.setTitle(Constante.TITLE_PUNTOS_FUERA);
+                ventanaPuntosFueraDeControl.setResizable(false);
+                ventanaPuntosFueraDeControl.setLocationRelativeTo(null);
+                ventanaPuntosFueraDeControl.setVisible(true);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+    }
+    
+    private void mostrarPuntosFueraYEliminar(GraficoPorAtributo grafico,List<PuntoFueraLimite> puntosMostrar){
+        final String mensaje = Constante.MENSAJE_PUNTOS_FUERA_DE_LIMITES.replace("{}", String.valueOf(puntosMostrar.size()));
+        final int resultado  = JOptionPane.showConfirmDialog(this,mensaje, Constante.TITLE_PUNTOS_FUERA, JOptionPane.YES_NO_OPTION);
+        
+        switch(resultado){
+            case 0:
+                VentanaPuntosFueraDeControl ventanaPuntosFueraDeControl = null;
+                ventanaPuntosFueraDeControl = new VentanaPuntosFueraDeControl(grafico,puntosMostrar);
+                ventanaPuntosFueraDeControl.setTitle(Constante.TITLE_PUNTOS_FUERA);
+                ventanaPuntosFueraDeControl.setResizable(false);
+                ventanaPuntosFueraDeControl.setLocationRelativeTo(null);
+                ventanaPuntosFueraDeControl.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                ventanaPuntosFueraDeControl.setVisible(true);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_crearTabla;
     private javax.swing.JButton jButton_graficar;
