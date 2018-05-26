@@ -24,6 +24,7 @@ public class Grafico {
     protected List<Double> rangosPorFila;
     protected List<Double> desviacionPorFila;
     protected List<Double> rangosMoviles;
+    protected Double mediaConocida;
     
     public TipoGraficaEnum getTipoGrafico() {
         return tipoGrafico;
@@ -112,6 +113,14 @@ public class Grafico {
 
     public void setRangosMoviles(List<Double> rangosMoviles) {
         this.rangosMoviles = rangosMoviles;
+    }
+
+    public Double getMediaConocida() {
+        return mediaConocida;
+    }
+
+    public void setMediaConocida(Double mediaConocida) {
+        this.mediaConocida = mediaConocida;
     }
     
 }

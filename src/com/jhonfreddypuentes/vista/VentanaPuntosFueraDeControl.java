@@ -309,7 +309,12 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         //Grafico X bar
         String datos                           = Util.obtenerDatosCsvDesdeLista(datosPrimerGrafico);
                 
-        final Double mediaDeMedias = Util.obtenerMediaDeMedias(datosPrimerGrafico);
+        Double mediaDeMedias = Util.obtenerMediaDeMedias(datosPrimerGrafico);
+        
+        if(graficoPorVariable!=null && graficoPorVariable.getMediaConocida()!=null){
+            mediaDeMedias = graficoPorVariable.getMediaConocida();
+        }
+        
         final Double mediaDeRangos = Util.obtenerMediaDeRangos(rangosPorMuestra);
         // Constantes.
         final int tamMuestra = graficoPorVariable.getTamanioMuestra();
@@ -375,7 +380,11 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         double B4 = Constante.LISTA_B4.get(tamanioMuestra);
         double A3 = Constante.LISTA_A3.get(tamanioMuestra);
 
-        final Double mediaDeMedias = Util.obtenerMediaDeMedias(datosPrimerGrafico);
+        Double mediaDeMedias = Util.obtenerMediaDeMedias(datosPrimerGrafico);
+        
+        if(graficoPorVariable!=null && graficoPorVariable.getMediaConocida()!=null){
+            mediaDeMedias = graficoPorVariable.getMediaConocida();
+        }
         
         limiteControlInferiorS  = B3*mediaDeDesviaciones;
         limiteControlSuperiorS  = B4*mediaDeDesviaciones;
@@ -420,6 +429,10 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         String datosX               = Util.obtenerDatosCsvDesdeLista(datosEnFila);
         String datosRM              = Util.obtenerDatosCsvDesdeLista(rangosMoviles);
 
+        if(graficoPorVariable!=null && graficoPorVariable.getMediaConocida()!=null){
+            mediaGeneral = graficoPorVariable.getMediaConocida();
+        }
+        
         Double limiteSuperiorParaX = mediaGeneral + 3 * (mediaDeRangosMoviles/1.128);
         Double limiteInferiorParaX = mediaGeneral - 3 * (mediaDeRangosMoviles/1.128);
 
@@ -464,6 +477,11 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
       Double mxn =  (double) tam * n;
 
       Double pMedia              = sumatoria/mxn;
+      
+      if(graficoPorAtributo!=null && graficoPorAtributo.getMediaConocida()!=null){
+            pMedia = graficoPorVariable.getMediaConocida();
+      }
+      
       Double limiteSuperiorParaP = pMedia+3*Math.sqrt((pMedia*(1-pMedia))/tam);
       Double limiteInferiorParaP = pMedia-3*Math.sqrt((pMedia*(1-pMedia))/tam);
       String datosP              = Util.obtenerDatosCsvDesdeLista(datosEnFila,tam);
@@ -511,6 +529,10 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         Double mxn    =  (double) tam * n;
         Double pMedia = sumatoria/mxn;
 
+        if(graficoPorAtributo!=null && graficoPorAtributo.getMediaConocida()!=null){
+            pMedia = graficoPorVariable.getMediaConocida();
+        }
+        
         Double limiteSuperiorParaP = (tam*pMedia)+(3*Math.sqrt((tam*pMedia*(1-pMedia))));
         Double limiteInferiorParaP = (tam*pMedia)-(3*Math.sqrt((tam*pMedia*(1-pMedia))));
         String datosNP             = Util.obtenerDatosCsvDesdeLista(datosEnFila);
@@ -551,6 +573,11 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         String datosC                = Util.obtenerDatosCsvDesdeLista(datosEnFila);
         Double sumatoria             = Util.sumarElementos(datosEnFila);
         Double cBarra                = sumatoria/datosEnFila.size();
+                
+        if(graficoPorAtributo!=null && graficoPorAtributo.getMediaConocida()!=null){
+            cBarra = graficoPorVariable.getMediaConocida();
+        }        
+        
         Double limiteControlSuperior = cBarra + 3*Math.sqrt(cBarra);
         Double lineaCentral          = cBarra;
         Double limiteControlInferior = cBarra - 3*Math.sqrt(cBarra);
@@ -571,7 +598,7 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
     private void graficarU(){
         System.out.println("INI-graficarU()");
       
-        List<Double> datosEnFila = graficoPorAtributo.getDatos();
+        List<Double> disconformidadesPorUnidad = graficoPorAtributo.getDatos();
         DecimalFormat df = new DecimalFormat(Constante.STR_CERO_CERO);
         int n = graficoPorAtributo.getTamanioMuestra();
 
@@ -581,15 +608,19 @@ public class VentanaPuntosFueraDeControl extends javax.swing.JFrame {
         int contadorMuestra = 1;
         for(PuntoFueraLimite punto:eliminados){
             int muestra = punto.getMuestra();
-            datosEnFila.remove(muestra-contadorMuestra);
+            disconformidadesPorUnidad.remove(muestra-contadorMuestra);
             contadorMuestra++;
         }
                 
-        List<Double> disconformidadesPorUnidad = Util.getDisconformidadesPorUnidad(datosEnFila,n);
+        //List<Double> disconformidadesPorUnidad = Util.getDisconformidadesPorUnidad(datosEnFila,n);
         String datosU                          = Util.obtenerDatosCsvDesdeLista(disconformidadesPorUnidad);
         Double sumatoria                       = Util.sumarElementos(disconformidadesPorUnidad);
         Double uBarra                          = sumatoria/disconformidadesPorUnidad.size();
-
+                
+        if(graficoPorAtributo!=null && graficoPorAtributo.getMediaConocida()!=null){
+            uBarra = graficoPorVariable.getMediaConocida();
+        }       
+        
         Double limiteControlSuperior = uBarra + 3*Math.sqrt(uBarra/n);
         Double lineaCentral          = uBarra;
         Double limiteControlInferior = uBarra - 3*Math.sqrt(uBarra/n);

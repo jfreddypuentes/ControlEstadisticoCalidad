@@ -13,7 +13,6 @@ import com.jhonfreddypuentes.dto.GraficoPorAtributo;
 import com.jhonfreddypuentes.dto.GraficoPorVariable;
 import com.jhonfreddypuentes.dto.Limite;
 import com.jhonfreddypuentes.dto.PuntoFueraLimite;
-import com.jhonfreddypuentes.util.DataTransito;
 import com.jhonfreddypuentes.util.Excel;
 import com.jhonfreddypuentes.util.Util;
 import java.awt.event.KeyAdapter;
@@ -46,7 +45,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     public VentanaFormularioGrafica() {
         initComponents();
         tipoGrafica = null;
-        jLabel_tituloVentana.setText(DataTransito.tituloVentanaRegistroDatos);
         mostrarCamposTamanioMuestra(false);
         mostrarCampoParaMediaConocida(false);
         buttonGroup = new ButtonGroup();
@@ -124,7 +122,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel_tituloVentana = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton_cargueDatosPorExcel = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -149,10 +146,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
-
-        jLabel_tituloVentana.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel_tituloVentana.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel_tituloVentana.setText("Datos para Gráfica X barra R");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos"));
 
@@ -297,7 +290,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel_tituloVentana, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -319,8 +311,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel_tituloVentana)
-                .addGap(5, 5, 5)
+                .addGap(19, 19, 19)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -569,6 +560,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     comandoFinal             = comandoFinalXBarR.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPV = new GraficoPorVariable();
+                    graficoPV.setMediaConocida(mediaConocida);
                     graficoPorVariable = true;
                     //Tipo.
                     graficoPV.setTipoGrafico(TipoGraficaEnum.X_BARRA_R);
@@ -630,6 +622,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     comandoFinal             = comandoFinalXBarS.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPV = new GraficoPorVariable();
+                    graficoPV.setMediaConocida(mediaConocida);
                     graficoPorVariable = true;
                     //Tipo.
                     graficoPV.setTipoGrafico(TipoGraficaEnum.X_BARRA_S);
@@ -656,7 +649,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     
                 }else if(this.tipoGrafica==TipoGraficaEnum.X_M_R){
                     
-                    List<Double> datosEnFila    = Util.calcularMediasAritmeticasPorFila(data,true);
+                    List<Double> datosEnFila    = Util.getDataUnicaColumna(data);
                     
                     Double mediaGeneral         = Util.calcularMedia(datosEnFila);
                     List<Double> rangosMoviles  = Util.calcularRangosMoviles(datosEnFila);
@@ -683,6 +676,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     comandoFinal             = comandoFinalXBarS.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPV = new GraficoPorVariable();
+                    graficoPV.setMediaConocida(mediaConocida);
                     graficoPorVariable = true;
                     //Tipo.
                     graficoPV.setTipoGrafico(TipoGraficaEnum.X_M_R);
@@ -741,6 +735,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                         comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                                                 
                         graficoPA = new GraficoPorAtributo();
+                        graficoPA.setMediaConocida(mediaConocida);
                         graficoPorAtributo = true;
                         
                         graficoPA.setTipoGrafico(TipoGraficaEnum.P);
@@ -800,6 +795,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                         comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                         
                         graficoPA = new GraficoPorAtributo();
+                        graficoPA.setMediaConocida(mediaConocida);
                         graficoPorAtributo = true;
                         
                         graficoPA.setTipoGrafico(TipoGraficaEnum.NP);
@@ -846,6 +842,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPA = new GraficoPorAtributo();
+                    graficoPA.setMediaConocida(mediaConocida);
                     graficoPorAtributo = true;
 
                     graficoPA.setTipoGrafico(TipoGraficaEnum.C);
@@ -889,6 +886,7 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                                         
                     graficoPA = new GraficoPorAtributo();
+                    graficoPA.setMediaConocida(mediaConocida);
                     graficoPorAtributo = true;
 
                     graficoPA.setTipoGrafico(TipoGraficaEnum.U);
@@ -1098,7 +1096,6 @@ public class VentanaFormularioGrafica extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_mediaDeRangos;
     private javax.swing.JLabel jLabel_mediaDe_medias;
     private javax.swing.JLabel jLabel_tamanio_muestra;
-    private javax.swing.JLabel jLabel_tituloVentana;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

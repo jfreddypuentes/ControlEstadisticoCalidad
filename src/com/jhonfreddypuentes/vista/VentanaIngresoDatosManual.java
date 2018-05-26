@@ -380,6 +380,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     comandoFinal             = comandoFinalXBarR.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
 
                     graficoPV = new GraficoPorVariable();
+                    graficoPV.setMediaConocida(mediaConocida);
                     graficoPorVariable = true;
                     //Tipo.
                     graficoPV.setTipoGrafico(TipoGraficaEnum.X_BARRA_R);
@@ -436,6 +437,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     comandoFinal             = comandoFinalXBarS.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPV = new GraficoPorVariable();
+                    graficoPV.setMediaConocida(mediaConocida);
                     graficoPorVariable = true;
                     //Tipo.
                     graficoPV.setTipoGrafico(TipoGraficaEnum.X_BARRA_S);
@@ -462,7 +464,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     
                 }else if(this.tipoGrafica==TipoGraficaEnum.X_M_R){
                     
-                    List<Double> datosEnFila    = Util.calcularMediasAritmeticasPorFila(data);
+                    List<Double> datosEnFila    = Util.getDataUnicaColumna(data);
                     Double mediaGeneral         = Util.calcularMedia(datosEnFila);
                     List<Double> rangosMoviles  = Util.calcularRangosMoviles(datosEnFila); 
                     Double mediaDeRangosMoviles = Util.calcularMedia(rangosMoviles);
@@ -488,6 +490,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     comandoFinal             = comandoFinalXBarS.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPV = new GraficoPorVariable();
+                    graficoPV.setMediaConocida(mediaConocida);
                     graficoPorVariable = true;
                     //Tipo.
                     graficoPV.setTipoGrafico(TipoGraficaEnum.X_M_R);
@@ -522,7 +525,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                         int n = datosEnFila.size();
                         Double mxn =  (double) tam * n;
                         Double division = sumatoria/mxn;
-                        Double pMedia              = division;
+                        Double pMedia   = division;
                         
                         /** Uso de media del proceso si es conocida. */
                         if(this.mediaConocida!=null){
@@ -544,6 +547,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                         comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                         
                         graficoPA = new GraficoPorAtributo();
+                        graficoPA.setMediaConocida(mediaConocida);
                         graficoPorAtributo = true;
                         
                         graficoPA.setTipoGrafico(TipoGraficaEnum.P);
@@ -602,6 +606,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                         comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                         
                         graficoPA = new GraficoPorAtributo();
+                        graficoPA.setMediaConocida(mediaConocida);
                         graficoPorAtributo = true;
                         
                         graficoPA.setTipoGrafico(TipoGraficaEnum.NP);
@@ -647,6 +652,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPA = new GraficoPorAtributo();
+                    graficoPA.setMediaConocida(mediaConocida);
                     graficoPorAtributo = true;
 
                     graficoPA.setTipoGrafico(TipoGraficaEnum.C);
@@ -690,6 +696,7 @@ public class VentanaIngresoDatosManual extends javax.swing.JFrame {
                     comandoFinal         = comandoFinalP.replace(Constante.STR_BUILD_CLASES, Constante.STR_EMPTY);
                     
                     graficoPA = new GraficoPorAtributo();
+                    graficoPA.setMediaConocida(mediaConocida);
                     graficoPorAtributo = true;
 
                     graficoPA.setTipoGrafico(TipoGraficaEnum.U);

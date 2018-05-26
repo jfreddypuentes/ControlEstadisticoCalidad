@@ -7,7 +7,6 @@ package com.jhonfreddypuentes.vista;
 
 import com.jhonfreddypuentes.constante.Constante;
 import com.jhonfreddypuentes.constante.TipoGraficaEnum;
-import com.jhonfreddypuentes.util.DataTransito;
 import com.jhonfreddypuentes.util.Util;
 import java.awt.Desktop;
 import java.io.File;
@@ -286,7 +285,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             ventanaFormulario.setTitle(Constante.U);
         }
         
-        DataTransito.tituloVentanaRegistroDatos = ventanaFormulario.getTitle();
+        //DataTransito.tituloVentanaRegistroDatos = ventanaFormulario.getTitle();
         ventanaFormulario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         ventanaFormulario.setLocationRelativeTo(null);
         ventanaFormulario.setTipoGrafica(tipo);
